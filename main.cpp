@@ -1,8 +1,8 @@
 //
-//  main.c
+//  main.cpp
 //  FFT_check
 //
-//  Created by Gal Argov Sofer on 6/10/17.
+//  Created by Gal Argov Sofer Sofer on 08/09/17.
 //  Copyright © 2017 Gal Argov Sofer. All rights reserved.
 //
 
@@ -14,10 +14,10 @@
 
 using namespace std;
 
-#define M_PI 3.1415926535897932384
+#define M_PI 3.1415926535897932384  // Pi
 
 // Function to calculate the log2(.) of int numbers
-int log2(int N)    
+int log2(int N)
 {
     int k = N, i = 0;
     while(k) {
@@ -27,14 +27,14 @@ int log2(int N)
     return i - 1;
 }
 
-//checking if the number of element is a power of 2
-int check(int n)    
+// Checking if the number of element is a power of 2
+int check(int n)
 {
     return n > 0 && (n & (n - 1)) == 0;
 }
 
 // Calculating reverse number
-int reverse(int N, int n)    
+int reverse(int N, int n)
 {
     int j, p = 0;
 
@@ -46,7 +46,7 @@ int reverse(int N, int n)
 }
 
 // Using the reverse order in the array
-void ordina(complex<double>* f1, int N) 
+void ordina(complex<double>* f1, int N)
 {
     complex<double> f2[MAX];
 
@@ -57,22 +57,23 @@ void ordina(complex<double>* f1, int N)
         f1[j] = f2[j];
 }
 
-void transform(complex<double>* f, int N) //
+// Calculating the fransformation
+void transform(complex<double>* f, int N)
 {
-    ordina(f, N);    //first: reverse order
+    ordina(f, N);    // 1.Reverse order
+    complex<double> *W;
     int n = 1;
     int a = 0;
-    complex<double> *W;
-
+    
     W = (complex<double> *)malloc(N / 2 * sizeof(complex<double>));
     W[1] = polar(1., -2. * M_PI / N); // 2. Calculate W(n), it aslo can be: polar(1., 2. * M_PI / N)
     W[0] = 1;
-
+    
     for(int i = 2; i < N / 2; i++)
         W[i] = pow(W[1], i);
     
     a = N / 2;
-    
+
     for(int j = 0; j < log2(N); j++) {
         for(int i = 0; i < N; i++) {
             if(!(i & n)) {
@@ -92,35 +93,35 @@ void FFT(complex<double>* f, int N, double d)
 {
     transform(f, N);
     for(int i = 0; i < N; i++)
-        f[i] *= d; //multiplying by step
+        f[i] *= d; // Multiplying by step
 }
 
 int main()
 {
-    int n;
-    double d;
+    int n;      // Number of elements
+    double d;   // Value of w
     complex<double> vec[MAX];
 
     do {
-        cout << "specify array dimension (MUST be power of 2)" << endl;
+        cout << "Specify array dimension (MUST be power of 2): ";
         cin >> n;
     } while(!check(n));
 
-    cout << "specify sampling step" << endl; //just write 1 in order to have the same results of matlab fft(.)
+    cout << "Specify sampling step (1 is default): "; // Just write 1 in order to have the same results of matlab fft(.)
     cin >> d;
-    cout << "specify the array" << endl;
-
+    cout << "Specify the array" << endl;
+    
     for(int i = 0; i < n; i++) {
-        cout << "specify element number: " << i << endl;
+        cout << "Specify element number " << i <<": ";
         cin >> vec[i];
     }
-
+    
     FFT(vec, n, d);
-
-    cout << "...printing the FFT of the array specified" << endl;
-
+    
+    cout << "Printing the FFT of the array specified:" << endl;
+    
     for(int j = 0; j < n; j++)
         cout << vec[j] << endl;
-
+    
     return 0;
 }
