@@ -14,7 +14,8 @@
 
 using namespace std;
 
-#define M_PI 3.1415926535897932384  // Pi
+// #define M_PI 3.1415926535897932384  // Pi
+#define M_PI 3.14159265358979323846264338327950288   // Pi
 
 // Function to calculate the log2(.) of int numbers
 int log2(int N)
